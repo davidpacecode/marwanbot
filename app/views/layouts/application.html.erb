@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Marwanbot" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%# including web awesome stuff %>
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/styles/themes/default.css" />
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/styles/webawesome.css" />
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/webawesome.loader.js"></script>
+  </head>
+
+  <body>
+
+    <wa-page mobile-breakpoint="920">
+     <header slot="header" class="wa-split">
+        <div class="wa-cluster">
+          <%= link_to root_path, style: "display: flex; align-items: center; gap: 0.5rem;" do %>
+            <wa-icon name="beer-mug-empty" style="color: var(--wa-color-brand-fill-loud); font-size: 1.5em;"></wa-icon>
+            <span id="brand-name" class="wa-heading-s wa-desktop-only">Marwanbot</span>
+          <% end %>
+        </div>
+        <div class="wa-cluster wa-gap-xs">
+          <%= button_to "Log out", session_path, method: :delete if authenticated? %>
+        </div>
+      </header>
+
+      <nav slot="navigation">
+        <%= link_to "Home", root_path %>
+        <%= link_to "About", about_path %>
+      </nav>
+
+      <main class="wa-body-l">
+        <%= yield %>
+      </main>
+
+      <footer slot="footer">
+        <div>
+          Made with <wa-icon name="heart" style="font-size: 1.5em; color: red"></wa-icon> by the Likable Guys
+        </div>
+      </footer>
+    </wa-page>
+
+    <style>
+      wa-page {
+        --menu-width: 15rem;
+        --aside-width: 15rem;
+      }
+      wa-page[view='desktop'] {
+        [slot*='navigation'] {
+          border-inline-end: var(--wa-border-width-s) var(--wa-border-style) var(--wa-color-surface-border);
+        }
+      }
+      wa-page[view='mobile'] {
+        --menu-width: auto;
+        --aside-width: auto;
+      }
+
+      [slot='header'] {
+        --wa-link-decoration-default: none;
+        border-block-end: var(--wa-border-width-s) var(--wa-border-style) var(--wa-color-surface-border);
+      }
+      [slot*='header'] a {
+        font-weight: var(--wa-font-weight-action);
+      }
+
+      [slot*='navigation'] a {
+        --wa-color-text-link: var(--wa-color-text-normal);
+      }
+
+      [slot='footer'] {
+        --wa-color-text-link: var(--wa-color-text-quiet);
+        font-size: var(--wa-font-size-s);
+        justify-content: center;
+      }
+    </style>
+
+    <script>
+      const sectionAnchors = document.querySelectorAll("[slot*='navigation'] a[href*='#']");
+      sectionAnchors.forEach((sectionAnchor) => sectionAnchor.setAttribute("data-drawer", "close"));
+    </script>
+
+
+
+  </body>
+</html>
