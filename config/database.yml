@@ -87,7 +87,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: marwanbot_production
+    database: marwanbot_database
     username: marwanbot
     password: <%= ENV["MARWANBOT_DATABASE_PASSWORD"] %>
   cache:
