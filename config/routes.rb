@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :messages
+  resources :chats
   resource :session
   resources :passwords, param: :token
   root "page#home"
